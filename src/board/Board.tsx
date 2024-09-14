@@ -8,65 +8,17 @@ import React, {
 import { Layer, Rect, Text, Line } from "react-konva";
 import Konva from "konva";
 import KonvaEventObject = Konva.KonvaEventObject;
-import { CellInfo, changeCursor, createRangeArray } from "./gameEngine";
-import { boardConfig, gameConfig, theme } from "./gameConfig";
+import { CellInfo, changeCursor, createRangeArray } from "../gameEngine";
+import { boardConfig, gameConfig, theme } from "../gameConfig";
 import Animation = Konva.Animation;
-
-type BoardLayerProps = {
-  width: number;
-  height: number;
-  board: CellInfo[][];
-  handleTurn: (i: number, j: number) => void;
-  currentPlayer: string | undefined;
-};
-
-type PlayerBankLocation = {
-  x: number;
-  y: number;
-};
-
-type CreatePlayerBankProps = {
-  playerBankBase: PlayerBankLocation;
-  board: CellInfo[][];
-  handleTurn: (i: number, j: number) => void;
-  playerBankCurrent: PlayerBankLocation;
-  setPlayerBank: (bank: PlayerBankLocation) => void;
-  playerBank: string;
-  currentPlayer: string | undefined;
-};
-
-type PlayerBankProps = {
-  playerBankBase: PlayerBankLocation;
-  board: CellInfo[][];
-  handleTurn: (i: number, j: number) => void;
-  playerBankCurrent: PlayerBankLocation;
-  setPlayerBank: (bank: PlayerBankLocation) => void;
-  playerBank: string;
-  draggable: boolean;
-  bankKey: string;
-};
-
-type LineProps = {
-  i: number;
-};
-
-type CreateBoardCellsProps = {
-  board: CellInfo[][];
-  handleTurn: (i: number, j: number) => void;
-};
-
-type BoardCellProps = CreateBoardCellsProps & {
-  i: number;
-};
-
-type BoardInfo = {
-  cellWidth: number;
-  cellHeight: number;
-  xStart: number;
-  xEnd: number;
-  yStart: number;
-  yEnd: number;
-};
+import {
+  BoardCellProps,
+  BoardInfo, BoardLayerProps,
+  CreateBoardCellsProps,
+  CreatePlayerBankProps,
+  LineProps, PlayerBankLocation,
+  PlayerBankProps
+} from "./BoardTypes";
 
 const BoardInfoContext = createContext<BoardInfo>({
   cellWidth: 0,
@@ -236,19 +188,19 @@ const PlayerBank = (props: PlayerBankProps) => {
     <Text
       x={props.playerBankCurrent.x}
       y={props.playerBankCurrent.y}
-      onMouseEnter={(e) => {
+      onMouseEnter={(e: KonvaEventObject<MouseEvent>) => {
         if (props.draggable) {
           e.currentTarget.setAttr("fill", theme.button);
         }
       }}
-      onMouseLeave={(e) => {
+      onMouseLeave={(e: KonvaEventObject<MouseEvent>) => {
         e.currentTarget.setAttr("fill", theme.text);
       }}
       onDragMove={(e: KonvaEventObject<MouseEvent>) => {
         props.setPlayerBank({ x: e.target.x(), y: e.target.y() });
       }}
       fill={theme.text}
-      onDragEnd={(e) => {
+      onDragEnd={(e: KonvaEventObject<MouseEvent>) => {
         // if drag ended within the board
         if (
           e.target.x() >= context.xStart &&

@@ -5,11 +5,16 @@ import { gameConfig } from "./gameConfig";
 
 type CursorType = "default" | "pointer";
 
+export type CellInfo = {
+  val: string | undefined;
+  partOfWin: boolean;
+};
+
 // if game won, return coordinates of cells that are part of the win
 // return empty array otherwise - IMPORTANT: currently check win only works on 3x3 board
 const checkWin = (board: CellInfo[][]): number[][] => {
-  // check rows
   for (var i = 0; i < 3; i++) {
+    // check row
     if (
       board[i][0].val !== undefined &&
       board[i][0].val === board[i][1].val &&
@@ -72,17 +77,11 @@ const changeCursor = (
   e: KonvaEventObject<MouseEvent>,
   cursorType: CursorType,
 ): void => {
-  let stage: Stage | null;
-  stage = e.target.getStage();
+  const stage: Stage | null = e.target.getStage();
   if (stage !== null) {
     let container = stage.container();
     container.style.cursor = cursorType;
   }
-};
-
-export type CellInfo = {
-  val: string | undefined;
-  partOfWin: boolean;
 };
 
 const createCleanBoard = (): CellInfo[][] => {

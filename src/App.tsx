@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Stage, Layer, Text, Rect } from "react-konva";
 import "./App.css";
-import Board from "./Board";
+import Board from "./board/Board";
 import {
   changeCursor,
   checkGameOver,
